@@ -54,29 +54,27 @@ def pct_change(new, old):
 
 # Display results
 st.markdown("## 📊 Results Comparison")
-col3, col4, col5 = st.columns(3)
+col3, col4, col5 = st.columns([1, 1, 1.2])  # Adjusted column width for alignment
 
 with col3:
     st.markdown("### Metric")
-    st.write("Customers")
-    st.write("Revenue")
-    st.write("Gross Profit")
-    st.write("Operational Expense")
-    st.write("Net Profit")
+    metrics = ["Customers", "Revenue", "Gross Profit", "Operational Expense", "Net Profit"]
+    for m in metrics:
+        st.markdown(f"**{m}**")
 
 with col4:
     st.markdown("### Current")
-    st.write(f"{customers_current:,.0f}")
-    st.write(f"${revenue_current:,.2f}")
-    st.write(f"${gross_profit_current:,.2f}")
-    st.write(f"${op_expense_current:,.2f}")
-    st.write(f"${net_profit_current:,.2f}")
+    st.markdown(f"{customers_current:,.0f}")
+    st.markdown(f"${revenue_current:,.2f}")
+    st.markdown(f"${gross_profit_current:,.2f}")
+    st.markdown(f"${op_expense_current:,.2f}")
+    st.markdown(f"${net_profit_current:,.2f}")
 
 with col5:
     st.markdown("### Projected (% Change)")
-    st.write(f"{customers_new:,.0f} ({pct_change(customers_new, customers_current)})")
-    st.write(f"${revenue_new:,.2f} ({pct_change(revenue_new, revenue_current)})")
-    st.write(f"${gross_profit_new:,.2f} ({pct_change(gross_profit_new, gross_profit_current)})")
-    st.write(f"${op_expense_new:,.2f} ({pct_change(op_expense_current, op_expense_new)}) ↓")
-    st.write(f"${net_profit_new:,.2f} ({pct_change(net_profit_new, net_profit_current)})")
+    st.markdown(f"{customers_new:,.0f} ({pct_change(customers_new, customers_current)})")
+    st.markdown(f"${revenue_new:,.2f} ({pct_change(revenue_new, revenue_current)})")
+    st.markdown(f"${gross_profit_new:,.2f} ({pct_change(gross_profit_new, gross_profit_current)})")
+    st.markdown(f"${op_expense_new:,.2f} ({pct_change(op_expense_current, op_expense_new)}) ↓")
+    st.markdown(f"${net_profit_new:,.2f} ({pct_change(net_profit_new, net_profit_current)})")
 
