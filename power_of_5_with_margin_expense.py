@@ -1,0 +1,66 @@
+
+import streamlit as st
+
+st.set_page_config(page_title="Power of 5 Profit Calculator", layout="centered")
+st.title("📈 Power of 5 Profit Growth Planner")
+
+st.markdown("Use the inputs below to compare your current business metrics to projected improvements using the ActionCOACH Power of 5 formula.")
+
+# Create two columns
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("🔹 Current Business Metrics")
+    leads_current = st.number_input("Leads", min_value=0, value=1000, step=50, key="leads_current")
+    conversion_current = st.slider("Conversion Rate (%)", 0.0, 100.0, 25.0, key="conv_current")
+    transactions_current = st.number_input("Transactions per Customer", 0.0, value=2.0, step=0.1, key="trans_current")
+    avg_sale_current = st.number_input("Average Sale ($)", 0.0, value=100.0, step=10.0, key="sale_current")
+    gross_margin_current = st.slider("Gross Margin (%)", 0.0, 100.0, 60.0, key="gm_current")
+    op_expense_current = st.number_input("Monthly Operational Expense ($)", 0.0, value=20000.0, step=500.0, key="opex_current")
+
+with col2:
+    st.subheader("🔸 Planned % Improvements")
+    leads_increase = st.slider("Leads Increase (%)", 0.0, 100.0, 10.0, key="leads_inc")
+    conversion_increase = st.slider("Conversion Rate Increase (%)", 0.0, 100.0, 10.0, key="conv_inc")
+    transactions_increase = st.slider("Transactions Increase (%)", 0.0, 100.0, 10.0, key="trans_inc")
+    avg_sale_increase = st.slider("Average Sale Increase (%)", 0.0, 100.0, 10.0, key="sale_inc")
+    gross_margin_increase = st.slider("Gross Margin Increase (%)", 0.0, 100.0, 5.0, key="gm_inc")
+    op_expense_reduction = st.slider("Operational Expense Reduction (%)", 0.0, 100.0, 10.0, key="opex_dec")
+
+# Compute current values
+customers_current = leads_current * (conversion_current / 100)
+revenue_current = customers_current * transactions_current * avg_sale_current
+gross_profit_current = revenue_current * (gross_margin_current / 100)
+net_profit_current = gross_profit_current - op_expense_current
+
+# Compute improved values
+leads_new = leads_current * (1 + leads_increase / 100)
+conversion_new = conversion_current * (1 + conversion_increase / 100)
+transactions_new = transactions_current * (1 + transactions_increase / 100)
+avg_sale_new = avg_sale_current * (1 + avg_sale_increase / 100)
+gross_margin_new = gross_margin_current * (1 + gross_margin_increase / 100)
+op_expense_new = op_expense_current * (1 - op_expense_reduction / 100)
+
+customers_new = leads_new * (conversion_new / 100)
+revenue_new = customers_new * transactions_new * avg_sale_new
+gross_profit_new = revenue_new * (gross_margin_new / 100)
+net_profit_new = gross_profit_new - op_expense_new
+
+# Display results
+st.markdown("## 📊 Results Comparison")
+col3, col4 = st.columns(2)
+with col3:
+    st.markdown("### Current")
+    st.write(f"Customers: **{customers_current:,.0f}**")
+    st.write(f"Revenue: **${revenue_current:,.2f}**")
+    st.write(f"Gross Profit: **${gross_profit_current:,.2f}**")
+    st.write(f"Operational Expense: **${op_expense_current:,.2f}**")
+    st.write(f"Net Profit: **${net_profit_current:,.2f}**")
+
+with col4:
+    st.markdown("### Projected")
+    st.write(f"Customers: **{customers_new:,.0f}**")
+    st.write(f"Revenue: **${revenue_new:,.2f}**")
+    st.write(f"Gross Profit: **${gross_profit_new:,.2f}**")
+    st.write(f"Operational Expense: **${op_expense_new:,.2f}**")
+    st.write(f"Net Profit: **${net_profit_new:,.2f}**")
