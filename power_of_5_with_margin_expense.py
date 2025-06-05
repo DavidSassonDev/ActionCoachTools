@@ -1,12 +1,12 @@
 
 import streamlit as st
 
-st.set_page_config(page_title="Power of 5 Profit Calculator", layout="centered")
+st.set_page_config(page_title="Power of 5 Profit Growth Planner", layout="centered")
 st.title("📈 Power of 5 Profit Growth Planner")
 
 st.markdown("Use the inputs below to compare your current business metrics to projected improvements using the ActionCOACH Power of 5 formula.")
 
-# Create two columns
+# Input columns
 col1, col2 = st.columns(2)
 
 with col1:
@@ -27,13 +27,13 @@ with col2:
     gross_margin_increase = st.slider("Gross Margin Increase (%)", 0.0, 100.0, 5.0, key="gm_inc")
     op_expense_reduction = st.slider("Operational Expense Reduction (%)", 0.0, 100.0, 10.0, key="opex_dec")
 
-# Compute current values
+# Current values
 customers_current = leads_current * (conversion_current / 100)
 revenue_current = customers_current * transactions_current * avg_sale_current
 gross_profit_current = revenue_current * (gross_margin_current / 100)
 net_profit_current = gross_profit_current - op_expense_current
 
-# Compute improved values
+# Improved values
 leads_new = leads_current * (1 + leads_increase / 100)
 conversion_new = conversion_current * (1 + conversion_increase / 100)
 transactions_new = transactions_current * (1 + transactions_increase / 100)
@@ -46,21 +46,37 @@ revenue_new = customers_new * transactions_new * avg_sale_new
 gross_profit_new = revenue_new * (gross_margin_new / 100)
 net_profit_new = gross_profit_new - op_expense_new
 
+# % Improvements
+def pct_change(new, old):
+    if old == 0:
+        return "N/A"
+    return f"{((new - old) / old) * 100:.1f}%"
+
 # Display results
 st.markdown("## 📊 Results Comparison")
-col3, col4 = st.columns(2)
+col3, col4, col5 = st.columns(3)
+
 with col3:
-    st.markdown("### Current")
-    st.write(f"Customers: **{customers_current:,.0f}**")
-    st.write(f"Revenue: **${revenue_current:,.2f}**")
-    st.write(f"Gross Profit: **${gross_profit_current:,.2f}**")
-    st.write(f"Operational Expense: **${op_expense_current:,.2f}**")
-    st.write(f"Net Profit: **${net_profit_current:,.2f}**")
+    st.markdown("### Metric")
+    st.write("Customers")
+    st.write("Revenue")
+    st.write("Gross Profit")
+    st.write("Operational Expense")
+    st.write("Net Profit")
 
 with col4:
-    st.markdown("### Projected")
-    st.write(f"Customers: **{customers_new:,.0f}**")
-    st.write(f"Revenue: **${revenue_new:,.2f}**")
-    st.write(f"Gross Profit: **${gross_profit_new:,.2f}**")
-    st.write(f"Operational Expense: **${op_expense_new:,.2f}**")
-    st.write(f"Net Profit: **${net_profit_new:,.2f}**")
+    st.markdown("### Current")
+    st.write(f"{customers_current:,.0f}")
+    st.write(f"${revenue_current:,.2f}")
+    st.write(f"${gross_profit_current:,.2f}")
+    st.write(f"${op_expense_current:,.2f}")
+    st.write(f"${net_profit_current:,.2f}")
+
+with col5:
+    st.markdown("### Projected (% Change)")
+    st.write(f"{customers_new:,.0f} ({pct_change(customers_new, customers_current)})")
+    st.write(f"${revenue_new:,.2f} ({pct_change(revenue_new, revenue_current)})")
+    st.write(f"${gross_profit_new:,.2f} ({pct_change(gross_profit_new, gross_profit_current)})")
+    st.write(f"${op_expense_new:,.2f} ({pct_change(op_expense_current, op_expense_new)}) ↓")
+    st.write(f"${net_profit_new:,.2f} ({pct_change(net_profit_new, net_profit_current)})")
+
